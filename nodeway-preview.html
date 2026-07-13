@@ -77,6 +77,15 @@ a { color: var(--indigo); }
   cursor: pointer; transition: border-color 0.15s ease, color 0.15s ease;
 }
 .icon-btn:hover { border-color: var(--indigo); color: var(--indigo); }
+.icon-btn { position: relative; }
+.gear-status-dot {
+  position: absolute; top: -2px; right: -2px;
+  width: 10px; height: 10px; border-radius: 50%;
+  border: 2px solid var(--bg); box-sizing: content-box;
+}
+.gear-status-dot.status-ok { background: #2fae5c; }
+.gear-status-dot.status-error { background: #d64545; }
+.gear-status-dot.status-unknown { background: #c4c8d6; }
 
 /* ---------- Stage / hero ---------- */
 .stage { max-width: 1080px; margin: 0 auto; padding: 0 28px 100px; }
@@ -208,6 +217,13 @@ a { color: var(--indigo); }
   padding: 3px 9px; border-radius: 999px; letter-spacing: 0.03em;
 }
 .node-badge.wiki-badge { background: #f1eee6; color: #8a7a4a; }
+.badge-row { display: flex; align-items: center; gap: 8px; }
+.wiki-link-badge {
+  background: var(--teal-soft); color: #0d6d61; text-decoration: none;
+  transition: background 0.15s ease;
+}
+.wiki-link-badge:hover { background: #cdeeea; }
+.sort-badge { background: var(--bg); color: var(--ink-muted); border: 1px solid var(--border); }
 
 .node-card-body { font-size: 0.93rem; line-height: 1.65; color: var(--ink); }
 .node-card-body p { margin: 0 0 10px; }
@@ -225,13 +241,22 @@ a { color: var(--indigo); }
 .images-grid .img-credit { grid-column: 1 / -1; font-family: var(--mono); font-size: 0.65rem; color: var(--ink-muted); margin-top: 4px; }
 
 /* papers */
-.paper-card { border-top: 1px solid var(--border); padding: 14px 0; }
-.paper-card:first-child { border-top: none; padding-top: 4px; }
-.paper-title { font-weight: 700; font-size: 0.95rem; margin: 0 0 4px; }
-.paper-title a { color: var(--indigo-dark); text-decoration: none; }
-.paper-title a:hover { text-decoration: underline; }
+.papers-list { max-height: 420px; overflow-y: auto; padding-right: 4px; }
+.paper-card {
+  border-top: 1px solid var(--border); padding: 14px 6px;
+  cursor: pointer; border-radius: 8px; margin: 0 -6px;
+  transition: background 0.15s ease;
+}
+.paper-card:hover { background: var(--bg); }
+.paper-card.open { background: var(--indigo-soft); }
+.paper-card:first-child { border-top: none; }
+.paper-title { font-weight: 700; font-size: 0.95rem; margin: 0 0 4px; color: var(--ink); }
 .paper-meta { font-family: var(--mono); font-size: 0.7rem; color: var(--ink-muted); text-transform: uppercase; margin: 0 0 6px; }
-.paper-abstract { font-size: 0.85rem; color: var(--ink-muted); margin: 0; }
+.paper-abstract { font-size: 0.85rem; color: var(--ink-muted); margin: 0 0 4px; }
+.paper-hint {
+  font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase;
+  color: var(--indigo); margin: 0; letter-spacing: 0.03em;
+}
 
 /* related chips */
 .chips-row { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -294,9 +319,36 @@ a { color: var(--indigo); }
 .modal-input {
   width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
   padding: 12px 14px; font-family: var(--mono); font-size: 0.85rem; color: var(--ink);
+  margin-bottom: 4px;
 }
+.modal-input:disabled { opacity: 0.5; }
 .modal-hint { font-size: 0.78rem; color: var(--ink-muted); line-height: 1.5; margin: 10px 0 18px; }
 .modal .btn-primary, .modal .btn-ghost { margin-right: 8px; margin-top: 4px; }
+.modal-wide { max-width: 560px; }
+
+/* connections list */
+.connections-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 6px; }
+.connections-empty { font-size: 0.85rem; color: var(--ink-muted); font-style: italic; margin: 6px 0 14px; }
+.connection-row {
+  display: flex; align-items: center; gap: 10px;
+  border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px;
+  background: var(--bg);
+}
+.status-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.status-dot.status-ok { background: #2fae5c; }
+.status-dot.status-error { background: #d64545; }
+.status-dot.status-unknown { background: #c4c8d6; }
+.connection-info { flex: 1; min-width: 0; }
+.connection-name { font-weight: 700; font-size: 0.86rem; margin: 0; }
+.connection-meta { font-family: var(--mono); font-size: 0.68rem; color: var(--ink-muted); margin: 2px 0 0; }
+.connection-active {
+  font-size: 0.72rem; color: var(--ink-muted); display: flex; align-items: center; gap: 4px;
+  white-space: nowrap;
+}
+.btn-sm { padding: 6px 10px; font-size: 0.75rem; }
+.icon-btn.btn-sm { width: 26px; height: 26px; }
+.connection-error-note { font-size: 0.75rem; margin: -4px 0 4px; }
+.connection-form { border-top: 1px solid var(--border); margin-top: 16px; padding-top: 4px; }
 
 .scrim { position: fixed; inset: 0; background: rgba(20,22,31,0.35); z-index: 40; }
 
@@ -325,6 +377,38 @@ a { color: var(--indigo); }
 
 [hidden] { display: none !important; }
 
+/* ---------- Paper insight bottom sheet ---------- */
+.insight-sheet {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 80;
+  max-height: 46vh;
+  background: var(--surface); border-top: 1px solid var(--border);
+  border-radius: 18px 18px 0 0;
+  box-shadow: 0 -12px 30px rgba(20,22,31,0.14);
+  display: flex; flex-direction: column;
+  animation: sheet-up 0.2s ease;
+}
+@keyframes sheet-up {
+  from { transform: translateY(16px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.insight-sheet-head {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+  padding: 16px 22px 10px; border-bottom: 1px solid var(--border);
+}
+.insight-sheet-title { font-weight: 800; font-size: 1rem; margin: 0; max-width: 640px; }
+.insight-sheet-body {
+  padding: 14px 22px; overflow-y: auto; font-size: 0.9rem; line-height: 1.6; color: var(--ink);
+}
+.insight-sheet-body p { margin: 0 0 10px; }
+.insight-sheet-body ul { margin: 0 0 10px; padding-left: 20px; }
+.insight-sheet-body li { margin-bottom: 4px; }
+.insight-sheet-footer { padding: 12px 22px 18px; border-top: 1px solid var(--border); }
+
+@media (max-width: 640px) {
+  .insight-sheet { max-height: 60vh; }
+  .insight-sheet-head, .insight-sheet-body, .insight-sheet-footer { padding-left: 16px; padding-right: 16px; }
+}
+
 </style>
 </head>
 <body>
@@ -341,6 +425,7 @@ a { color: var(--indigo); }
       <button id="historyToggle" class="pill-btn">Catalogue <span id="historyCount">0</span></button>
       <button id="settingsToggle" class="icon-btn" title="Settings" aria-label="Settings">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z" stroke="currentColor" stroke-width="1.6"/><path d="M19.4 13a7.97 7.97 0 000-2l2.1-1.6-2-3.4-2.5 1a8 8 0 00-1.7-1L14.9 3h-4l-.4 2.9a8 8 0 00-1.7 1l-2.5-1-2 3.4L6.4 11a8 8 0 000 2l-2.1 1.6 2 3.4 2.5-1a8 8 0 001.7 1L10.9 21h4l.4-2.9a8 8 0 001.7-1l2.5 1 2-3.4L19.4 13z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+        <span id="gearStatusDot" class="gear-status-dot status-unknown" title="AI connection status"></span>
       </button>
     </div>
   </div>
@@ -396,7 +481,10 @@ a { color: var(--indigo); }
       <article class="node-card node-card-summary">
         <div class="node-card-head">
           <h3 id="summaryHeading">AI Summary</h3>
-          <span class="node-badge" id="summaryBadge">wiki</span>
+          <div class="badge-row">
+            <span class="node-badge" id="summaryBadge">wiki</span>
+            <a id="wikiLink" class="node-badge wiki-link-badge" href="#" target="_blank" rel="noopener" hidden>Wikipedia ↗</a>
+          </div>
         </div>
         <div id="primerBody" class="node-card-body">
           <p class="loading">Thinking…</p>
@@ -411,8 +499,11 @@ a { color: var(--indigo); }
       </article>
 
       <article class="node-card node-card-papers">
-        <div class="node-card-head"><h3>Primary Sources</h3></div>
-        <div id="papersBody" class="node-card-body">
+        <div class="node-card-head">
+          <h3>Primary Sources</h3>
+          <span class="node-badge sort-badge">sorted by citations</span>
+        </div>
+        <div id="papersBody" class="node-card-body papers-list">
           <p class="loading">Querying CrossRef and Semantic Scholar…</p>
         </div>
       </article>
@@ -461,31 +552,35 @@ a { color: var(--indigo); }
 
 <!-- Settings modal -->
 <div class="modal-overlay" id="settingsOverlay" hidden>
-  <div class="modal">
+  <div class="modal modal-wide">
     <div class="drawer-head">
-      <h3>Settings</h3>
+      <h3>AI Connections</h3>
       <button id="closeSettings" class="icon-btn" aria-label="Close">✕</button>
     </div>
-    <label class="modal-label" for="providerSelect">AI provider (optional)</label>
-    <select id="providerSelect" class="modal-input">
-      <option value="none">None — use Wikipedia extract only</option>
-      <option value="anthropic">Anthropic (Claude)</option>
-      <option value="gemini">Google AI Studio (Gemini) — free tier</option>
-    </select>
-
-    <label class="modal-label" for="apiKeyInput">API key</label>
-    <input type="password" id="apiKeyInput" class="modal-input" placeholder="paste your key here">
-
-    <label class="modal-label" for="modelInput">Model</label>
-    <input type="text" id="modelInput" class="modal-input" placeholder="model name">
-
-    <p class="modal-hint" id="providerHint">
-      Stored only in this browser's local storage — never sent anywhere except directly to
-      the provider's API when generating a summary. Without a key, summaries fall back to the
-      first paragraph of the relevant Wikipedia article.
+    <p class="drawer-sub">
+      Add one or more providers. The one marked "active" powers AI Summary and
+      paper insights. Nothing here leaves your browser except direct calls to
+      the provider you choose.
     </p>
-    <button id="saveApiKey" class="btn-primary">Save</button>
-    <button id="clearApiKey" class="btn-ghost">Clear key</button>
+
+    <div id="connectionsList" class="connections-list"></div>
+
+    <div class="connection-form">
+      <label class="modal-label" for="newProviderType">Add a connection</label>
+      <select id="newProviderType" class="modal-input">
+        <option value="gemini">Google AI Studio (Gemini) — free</option>
+        <option value="anthropic">Anthropic (Claude)</option>
+        <option value="openai-compatible">Other (OpenAI-compatible) — Groq, OpenRouter, etc.</option>
+      </select>
+
+      <input type="text" id="newBaseUrl" class="modal-input" placeholder="Base URL, e.g. https://api.groq.com/openai/v1" hidden>
+      <input type="password" id="newApiKey" class="modal-input" placeholder="API key">
+      <input type="text" id="newModel" class="modal-input" placeholder="model name">
+      <input type="text" id="newNickname" class="modal-input" placeholder="Nickname (optional)">
+
+      <p class="modal-hint" id="newProviderHint"></p>
+      <button id="addConnectionBtn" class="btn-primary">Add connection</button>
+    </div>
   </div>
 </div>
 
@@ -506,6 +601,20 @@ a { color: var(--indigo); }
   <div class="map-canvas-wrap">
     <svg id="mapSvg"></svg>
     <p id="mapEmpty" class="map-empty" hidden>Open a topic to start building your map.</p>
+  </div>
+</div>
+
+<!-- Paper insight bottom sheet -->
+<div class="insight-sheet" id="insightSheet" hidden>
+  <div class="insight-sheet-head">
+    <p class="insight-sheet-title" id="insightTitle">—</p>
+    <button id="closeInsightSheet" class="icon-btn" aria-label="Close">✕</button>
+  </div>
+  <div class="insight-sheet-body" id="insightBody">
+    <p class="loading">Generating insights…</p>
+  </div>
+  <div class="insight-sheet-footer">
+    <a id="insightOpenPaper" href="#" target="_blank" rel="noopener" class="btn-primary">Open paper ↗</a>
   </div>
 </div>
 
@@ -708,9 +817,357 @@ function fieldForTopic(topicText) {
 
 </script>
 <script>
+// ---------- AI Connections: pluggable multi-provider manager ----------
+// Supports Anthropic, Google AI Studio (Gemini), and any OpenAI-compatible
+// endpoint (Groq, OpenRouter, Together, Mistral, DeepSeek, local Ollama/LM
+// Studio, etc.) — the last one is what makes this scale to "any provider"
+// without needing bespoke code per service.
+(function () {
+  const STORAGE = "nodeway.connections";
+  const ACTIVE_STORAGE = "nodeway.activeConnectionId";
+
+  const PROVIDER_META = {
+    gemini: {
+      label: "Google AI Studio (Gemini)",
+      defaultModel: "gemini-2.5-flash",
+      needsBaseUrl: false,
+      help: "Free key at aistudio.google.com/apikey. Generous free tier, good default choice.",
+    },
+    anthropic: {
+      label: "Anthropic (Claude)",
+      defaultModel: "claude-haiku-4-5-20251001",
+      needsBaseUrl: false,
+      help: "Key at console.anthropic.com. Pay-as-you-go, pennies per call on Haiku.",
+    },
+    "openai-compatible": {
+      label: "OpenAI-compatible",
+      defaultModel: "",
+      needsBaseUrl: true,
+      help: "Works with any provider implementing the OpenAI chat/completions format. Free options: Groq (console.groq.com — fast, generous free tier, e.g. model \"llama-3.3-70b-versatile\"), OpenRouter (openrouter.ai — has free models, e.g. \"meta-llama/llama-3.3-70b-instruct:free\").",
+    },
+  };
+
+  // ---------- storage ----------
+  function uid() {
+    return "c_" + Math.random().toString(36).slice(2, 10);
+  }
+  function getConnections() {
+    try {
+      const list = JSON.parse(localStorage.getItem(STORAGE));
+      if (Array.isArray(list)) return list;
+    } catch {}
+    return [];
+  }
+  function saveConnections(list) {
+    localStorage.setItem(STORAGE, JSON.stringify(list));
+  }
+  function getActiveId() {
+    return localStorage.getItem(ACTIVE_STORAGE) || "";
+  }
+  function setActiveId(id) {
+    localStorage.setItem(ACTIVE_STORAGE, id);
+    updateGearDot();
+  }
+  function getActiveConnection() {
+    return getConnections().find((c) => c.id === getActiveId()) || null;
+  }
+
+  function addConnection({ provider, nickname, apiKey, model, baseUrl }) {
+    const meta = PROVIDER_META[provider];
+    const list = getConnections();
+    const conn = {
+      id: uid(),
+      provider,
+      nickname: (nickname || "").trim() || meta.label,
+      apiKey: (apiKey || "").trim(),
+      model: (model || "").trim() || meta.defaultModel,
+      baseUrl: (baseUrl || "").trim().replace(/\/$/, ""),
+      status: "unknown",
+      lastTestedAt: null,
+    };
+    list.push(conn);
+    saveConnections(list);
+    if (!getActiveId()) setActiveId(conn.id);
+    return conn;
+  }
+
+  function removeConnection(id) {
+    const list = getConnections().filter((c) => c.id !== id);
+    saveConnections(list);
+    if (getActiveId() === id) setActiveId(list[0]?.id || "");
+    updateGearDot();
+  }
+
+  function updateConnection(id, patch) {
+    const list = getConnections();
+    const idx = list.findIndex((c) => c.id === id);
+    if (idx === -1) return;
+    list[idx] = { ...list[idx], ...patch };
+    saveConnections(list);
+  }
+
+  // ---------- provider adapters ----------
+  async function callAnthropic(conn, prompt) {
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": conn.apiKey,
+        "anthropic-version": "2023-06-01",
+        "anthropic-dangerous-direct-browser-access": "true",
+      },
+      body: JSON.stringify({
+        model: conn.model,
+        max_tokens: 500,
+        messages: [{ role: "user", content: prompt }],
+      }),
+    });
+    if (!res.ok) throw new Error("anthropic http " + res.status);
+    const data = await res.json();
+    return (data.content || [])
+      .filter((b) => b.type === "text")
+      .map((b) => b.text)
+      .join("\n\n");
+  }
+
+  async function callGemini(conn, prompt) {
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(conn.model)}:generateContent`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-goog-api-key": conn.apiKey },
+        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] }),
+      }
+    );
+    if (!res.ok) throw new Error("gemini http " + res.status);
+    const data = await res.json();
+    const parts = data.candidates?.[0]?.content?.parts || [];
+    return parts.map((p) => p.text || "").join("\n\n");
+  }
+
+  async function callOpenAiCompatible(conn, prompt) {
+    if (!conn.baseUrl) throw new Error("missing base url");
+    const res = await fetch(`${conn.baseUrl}/chat/completions`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${conn.apiKey}`,
+      },
+      body: JSON.stringify({
+        model: conn.model,
+        messages: [{ role: "user", content: prompt }],
+      }),
+    });
+    if (!res.ok) throw new Error("openai-compatible http " + res.status);
+    const data = await res.json();
+    return data.choices?.[0]?.message?.content || "";
+  }
+
+  async function call(conn, prompt) {
+    if (conn.provider === "anthropic") return callAnthropic(conn, prompt);
+    if (conn.provider === "gemini") return callGemini(conn, prompt);
+    if (conn.provider === "openai-compatible") return callOpenAiCompatible(conn, prompt);
+    throw new Error("unknown provider " + conn.provider);
+  }
+
+  async function callActive(prompt) {
+    const conn = getActiveConnection();
+    if (!conn || !conn.apiKey) return null;
+    return call(conn, prompt);
+  }
+
+  async function testConnection(id) {
+    const conn = getConnections().find((c) => c.id === id);
+    if (!conn) return "error";
+    let status = "error";
+    try {
+      const text = await call(conn, 'Reply with exactly one word: OK');
+      status = text && text.trim().length > 0 ? "ok" : "error";
+    } catch (err) {
+      status = "error";
+    }
+    updateConnection(id, { status, lastTestedAt: Date.now() });
+    updateGearDot();
+    return status;
+  }
+
+  // ---------- gear icon status dot ----------
+  function updateGearDot() {
+    const dot = document.getElementById("gearStatusDot");
+    if (!dot) return;
+    const conn = getActiveConnection();
+    dot.classList.remove("status-ok", "status-error", "status-unknown");
+    if (!conn) {
+      dot.classList.add("status-unknown");
+      dot.title = "No AI connection set up";
+    } else if (conn.status === "ok") {
+      dot.classList.add("status-ok");
+      dot.title = `Connected — ${conn.nickname}`;
+    } else if (conn.status === "error") {
+      dot.classList.add("status-error");
+      dot.title = `${conn.nickname} — last test failed`;
+    } else {
+      dot.classList.add("status-unknown");
+      dot.title = `${conn.nickname} — not tested yet`;
+    }
+  }
+
+  // ---------- settings modal UI ----------
+  function escapeHtml(str) {
+    const div = document.createElement("div");
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function renderConnectionsList() {
+    const list = getConnections();
+    const activeId = getActiveId();
+    const el = document.getElementById("connectionsList");
+    if (!el) return;
+    if (list.length === 0) {
+      el.innerHTML = `<p class="connections-empty">No connections yet — add one below. Gemini's free tier is the easiest place to start.</p>`;
+      return;
+    }
+    el.innerHTML = list
+      .map((c) => {
+        const meta = PROVIDER_META[c.provider] || {};
+        const isActive = c.id === activeId;
+        return `
+        <div class="connection-row" data-id="${c.id}">
+          <span class="status-dot status-${c.status}" title="${escapeHtml(c.status)}"></span>
+          <div class="connection-info">
+            <p class="connection-name">${escapeHtml(c.nickname)}</p>
+            <p class="connection-meta">${escapeHtml(meta.label || c.provider)} · ${escapeHtml(c.model || "—")}</p>
+          </div>
+          <label class="connection-active">
+            <input type="radio" name="activeConn" value="${c.id}" ${isActive ? "checked" : ""}> active
+          </label>
+          <button class="btn-ghost btn-sm test-btn" data-id="${c.id}">Test</button>
+          <button class="icon-btn btn-sm remove-btn" data-id="${c.id}" aria-label="Remove" title="Remove">✕</button>
+        </div>`;
+      })
+      .join("");
+  }
+
+  function wireConnectionsListEvents() {
+    const el = document.getElementById("connectionsList");
+    el.addEventListener("click", async (e) => {
+      const testBtn = e.target.closest(".test-btn");
+      const removeBtn = e.target.closest(".remove-btn");
+      if (testBtn) {
+        const id = testBtn.dataset.id;
+        testBtn.textContent = "Testing…";
+        testBtn.disabled = true;
+        const status = await testConnection(id);
+        renderConnectionsList();
+        updateGearDot();
+        if (status === "error") {
+          const row = el.querySelector(`.connection-row[data-id="${id}"]`);
+          if (row) {
+            const note = document.createElement("p");
+            note.className = "error-text connection-error-note";
+            note.textContent = "Couldn't connect — check the API key, model name, and (for OpenAI-compatible) the base URL.";
+            row.after(note);
+            setTimeout(() => note.remove(), 5000);
+          }
+        }
+      } else if (removeBtn) {
+        removeConnection(removeBtn.dataset.id);
+        renderConnectionsList();
+      }
+    });
+    el.addEventListener("change", (e) => {
+      if (e.target.name === "activeConn") {
+        setActiveId(e.target.value);
+        renderConnectionsList();
+      }
+    });
+  }
+
+  function wireAddForm() {
+    const providerType = document.getElementById("newProviderType");
+    const baseUrl = document.getElementById("newBaseUrl");
+    const apiKey = document.getElementById("newApiKey");
+    const model = document.getElementById("newModel");
+    const nickname = document.getElementById("newNickname");
+    const hint = document.getElementById("newProviderHint");
+    const addBtn = document.getElementById("addConnectionBtn");
+
+    function refresh() {
+      const meta = PROVIDER_META[providerType.value];
+      baseUrl.hidden = !meta.needsBaseUrl;
+      model.placeholder = meta.defaultModel ? `model name (default: ${meta.defaultModel})` : "model name";
+      hint.textContent = meta.help;
+    }
+    providerType.addEventListener("change", refresh);
+    refresh();
+
+    addBtn.addEventListener("click", () => {
+      if (!apiKey.value.trim()) {
+        apiKey.focus();
+        return;
+      }
+      addConnection({
+        provider: providerType.value,
+        nickname: nickname.value,
+        apiKey: apiKey.value,
+        model: model.value,
+        baseUrl: baseUrl.value,
+      });
+      apiKey.value = "";
+      model.value = "";
+      nickname.value = "";
+      renderConnectionsList();
+      updateGearDot();
+    });
+  }
+
+  function initSettingsUI() {
+    const settingsToggle = document.getElementById("settingsToggle");
+    const settingsOverlay = document.getElementById("settingsOverlay");
+    const closeSettings = document.getElementById("closeSettings");
+
+    settingsToggle.addEventListener("click", () => {
+      renderConnectionsList();
+      settingsOverlay.hidden = false;
+    });
+    closeSettings.addEventListener("click", () => (settingsOverlay.hidden = true));
+    settingsOverlay.addEventListener("click", (e) => {
+      if (e.target === settingsOverlay) settingsOverlay.hidden = true;
+    });
+
+    wireConnectionsListEvents();
+    wireAddForm();
+    updateGearDot();
+  }
+
+  document.addEventListener("DOMContentLoaded", initSettingsUI);
+  // in case this script runs after DOMContentLoaded already fired
+  if (document.readyState !== "loading") initSettingsUI();
+
+  window.NodewayAI = {
+    PROVIDER_META,
+    getConnections,
+    addConnection,
+    removeConnection,
+    updateConnection,
+    getActiveId,
+    setActiveId,
+    getActiveConnection,
+    callActive,
+    testConnection,
+    call,
+    updateGearDot,
+  };
+})();
+
+</script>
+<script>
 // ---------- State ----------
 let currentTopic = null;
 let currentField = "general";
+let currentPapers = [];
+let openInsightIdx = null;
 
 // ---------- DOM refs ----------
 const heroSection = document.getElementById("hero");
@@ -729,6 +1186,7 @@ const newTopicBtn = document.getElementById("newTopicBtn");
 
 const summaryHeading = document.getElementById("summaryHeading");
 const summaryBadge = document.getElementById("summaryBadge");
+const wikiLink = document.getElementById("wikiLink");
 const primerBody = document.getElementById("primerBody");
 const imagesBody = document.getElementById("imagesBody");
 const papersBody = document.getElementById("papersBody");
@@ -745,24 +1203,13 @@ const closeHistoryDrawer = document.getElementById("closeHistoryDrawer");
 const historyCount = document.getElementById("historyCount");
 const historyList = document.getElementById("historyList");
 
-const settingsToggle = document.getElementById("settingsToggle");
-const settingsOverlay = document.getElementById("settingsOverlay");
-const closeSettings = document.getElementById("closeSettings");
-const providerSelect = document.getElementById("providerSelect");
-const apiKeyInput = document.getElementById("apiKeyInput");
-const modelInput = document.getElementById("modelInput");
-const providerHint = document.getElementById("providerHint");
-const saveApiKey = document.getElementById("saveApiKey");
-const clearApiKey = document.getElementById("clearApiKey");
-
 const scrim = document.getElementById("scrim");
 
-// default model per provider — editable by the user in Settings if these drift
-const PROVIDER_DEFAULTS = {
-  anthropic: { model: "claude-haiku-4-5-20251001", keyHelp: "Get a key at console.anthropic.com. Paid, pay-as-you-go — pennies per summary on Haiku." },
-  gemini: { model: "gemini-2.5-flash", keyHelp: "Get a free key at aistudio.google.com/apikey. Gemini's free tier covers this kind of use easily." },
-  none: { model: "", keyHelp: "" },
-};
+const insightSheet = document.getElementById("insightSheet");
+const insightTitle = document.getElementById("insightTitle");
+const insightBody = document.getElementById("insightBody");
+const insightOpenPaper = document.getElementById("insightOpenPaper");
+const closeInsightSheet = document.getElementById("closeInsightSheet");
 
 // ---------- Utilities ----------
 function escapeHtml(str) {
@@ -775,24 +1222,8 @@ function truncate(str, n) {
   return str.length > n ? str.slice(0, n).trim() + "…" : str;
 }
 
-// ---------- AI provider settings storage ----------
-const SETTINGS_STORAGE = "nodeway.aiSettings";
-function getAiSettings() {
-  try {
-    const raw = JSON.parse(localStorage.getItem(SETTINGS_STORAGE));
-    if (raw && raw.provider) return raw;
-  } catch {}
-  return { provider: "none", apiKey: "", model: "" };
-}
-function setAiSettings(settings) {
-  localStorage.setItem(SETTINGS_STORAGE, JSON.stringify(settings));
-}
-function clearAiSettings() {
-  localStorage.removeItem(SETTINGS_STORAGE);
-}
-
 // ---------- Catalogue (localStorage) ----------
-const STORAGE_KEY = "fieldlog.catalogue";
+const STORAGE_KEY = "nodeway.catalogue";
 function getCatalogue() {
   try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
   catch { return []; }
@@ -826,7 +1257,7 @@ function renderCatalogue() {
   });
 }
 
-// ---------- Wikipedia (fallback summary + images) ----------
+// ---------- Wikipedia (primer fallback + images + related) ----------
 async function fetchWikipediaSummary(topic) {
   try {
     const searchUrl = `https://en.wikipedia.org/w/api.php?action=opensearch&search=${encodeURIComponent(topic)}&limit=1&namespace=0&format=json&origin=*`;
@@ -862,66 +1293,14 @@ async function fetchRelatedTopics(wikiTitle) {
   }
 }
 
-// ---------- AI summary (optional, needs the user's own API key) ----------
-const AI_PROMPT = (topic) =>
+// ---------- AI summary — routed through the active connection (js/connections.js) ----------
+const SUMMARY_PROMPT = (topic) =>
   `Give a sharp, concrete 2-paragraph primer on "${topic}" for someone starting to go deep on it. First paragraph: what it actually is and why it matters. Second paragraph: the 2-3 central tensions or open questions in the field right now. Plain language, no fluff, no "in conclusion." Do not use markdown headers.`;
 
-async function fetchAiSummaryAnthropic(topic, key, model) {
-  const res = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "x-api-key": key,
-      "anthropic-version": "2023-06-01",
-      "anthropic-dangerous-direct-browser-access": "true",
-    },
-    body: JSON.stringify({
-      model: model || PROVIDER_DEFAULTS.anthropic.model,
-      max_tokens: 400,
-      messages: [{ role: "user", content: AI_PROMPT(topic) }],
-    }),
-  });
-  if (!res.ok) throw new Error("anthropic api error " + res.status);
-  const data = await res.json();
-  return (data.content || [])
-    .filter((b) => b.type === "text")
-    .map((b) => b.text)
-    .join("\n\n");
-}
-
-async function fetchAiSummaryGemini(topic, key, model) {
-  const m = model || PROVIDER_DEFAULTS.gemini.model;
-  const res = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(m)}:generateContent`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-goog-api-key": key,
-      },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: AI_PROMPT(topic) }] }],
-      }),
-    }
-  );
-  if (!res.ok) throw new Error("gemini api error " + res.status);
-  const data = await res.json();
-  const parts = data.candidates?.[0]?.content?.parts || [];
-  return parts.map((p) => p.text || "").join("\n\n");
-}
-
 async function fetchAiSummary(topic) {
-  const settings = getAiSettings();
-  if (!settings.provider || settings.provider === "none" || !settings.apiKey) return null;
+  if (!window.NodewayAI) return null;
   try {
-    let text;
-    if (settings.provider === "anthropic") {
-      text = await fetchAiSummaryAnthropic(topic, settings.apiKey, settings.model);
-    } else if (settings.provider === "gemini") {
-      text = await fetchAiSummaryGemini(topic, settings.apiKey, settings.model);
-    } else {
-      return null;
-    }
+    const text = await window.NodewayAI.callActive(SUMMARY_PROMPT(topic));
     return text || null;
   } catch (err) {
     return null;
@@ -948,10 +1327,10 @@ async function fetchOpenverseImages(topic) {
   }
 }
 
-// ---------- Papers: CrossRef (primary, broad coverage) + Semantic Scholar (secondary) ----------
+// ---------- Papers: CrossRef (broad coverage) + Semantic Scholar, merged + sorted by citations ----------
 async function fetchCrossref(topic) {
   try {
-    const url = `https://api.crossref.org/works?query=${encodeURIComponent(topic)}&rows=5&sort=relevance`;
+    const url = `https://api.crossref.org/works?query=${encodeURIComponent(topic)}&rows=8&sort=relevance`;
     const res = await fetch(url);
     if (!res.ok) throw new Error("crossref error");
     const data = await res.json();
@@ -965,7 +1344,7 @@ async function fetchCrossref(topic) {
         url: it.URL,
         year: it["published-print"]?.["date-parts"]?.[0]?.[0] || it["published-online"]?.["date-parts"]?.[0]?.[0] || "",
         venue: it["container-title"]?.[0] || "",
-        citations: it["is-referenced-by-count"],
+        citations: typeof it["is-referenced-by-count"] === "number" ? it["is-referenced-by-count"] : null,
       }));
   } catch (err) {
     return [];
@@ -974,7 +1353,7 @@ async function fetchCrossref(topic) {
 
 async function fetchSemanticScholar(topic) {
   try {
-    const url = `https://api.semanticscholar.org/graph/v1/paper/search?query=${encodeURIComponent(topic)}&limit=5&fields=title,abstract,url,year,citationCount,venue`;
+    const url = `https://api.semanticscholar.org/graph/v1/paper/search?query=${encodeURIComponent(topic)}&limit=8&fields=title,abstract,url,year,citationCount,venue`;
     const res = await fetch(url);
     if (!res.ok) throw new Error("s2 error");
     const data = await res.json();
@@ -987,7 +1366,7 @@ async function fetchSemanticScholar(topic) {
         url: p.url,
         year: p.year || "",
         venue: p.venue || "",
-        citations: p.citationCount,
+        citations: typeof p.citationCount === "number" ? p.citationCount : null,
       }));
   } catch (err) {
     return [];
@@ -996,11 +1375,14 @@ async function fetchSemanticScholar(topic) {
 
 // ---------- Rendering ----------
 function renderSummary(aiText, wiki, topic) {
+  wikiLink.hidden = !wiki?.url;
+  if (wiki?.url) wikiLink.href = wiki.url;
+
   if (aiText) {
-    const settings = getAiSettings();
-    const providerLabel = settings.provider === "gemini" ? "AI · Gemini" : settings.provider === "anthropic" ? "AI · Claude" : "AI";
+    const conn = window.NodewayAI ? window.NodewayAI.getActiveConnection() : null;
+    const label = conn ? `AI · ${conn.nickname}` : "AI";
     summaryHeading.textContent = "AI Summary";
-    summaryBadge.textContent = providerLabel;
+    summaryBadge.textContent = label;
     summaryBadge.classList.remove("wiki-badge");
     primerBody.innerHTML = aiText
       .split(/\n{2,}/)
@@ -1015,7 +1397,7 @@ function renderSummary(aiText, wiki, topic) {
     primerBody.innerHTML = `<p class="error-text">Couldn't pull an overview for "${escapeHtml(topic)}". Try a more standard name for it.</p>`;
     return;
   }
-  primerBody.innerHTML = `<p>${escapeHtml(wiki.extract)}</p><p class="source-note">Wikipedia extract — add an API key (Claude or Gemini) in Settings for an AI-generated version instead.</p>`;
+  primerBody.innerHTML = `<p>${escapeHtml(wiki.extract)}</p><p class="source-note">Wikipedia extract — add an AI connection in Settings for a generated version instead.</p>`;
 }
 
 function renderImages(wikiThumb, openverseImages, topic) {
@@ -1036,21 +1418,26 @@ function renderImages(wikiThumb, openverseImages, topic) {
     .join("") + `<span class="img-credit">Images via Wikipedia &amp; Openverse (CC-licensed).</span>`;
 }
 
-function renderPapers(papers, topic) {
+function renderPapers(papers) {
+  currentPapers = papers;
+  openInsightIdx = null;
+  closeInsightSheetFn();
+
   if (!papers || papers.length === 0) {
-    papersBody.innerHTML = `<p class="error-text">No papers surfaced for "${escapeHtml(topic)}". Try <a href="https://www.semanticscholar.org/search?q=${encodeURIComponent(topic)}" target="_blank" rel="noopener">Semantic Scholar</a> directly.</p>`;
+    papersBody.innerHTML = `<p class="error-text">No papers surfaced. Try <a href="https://www.semanticscholar.org/search?q=${encodeURIComponent(currentTopic)}" target="_blank" rel="noopener">Semantic Scholar</a> directly.</p>`;
     return;
   }
   papersBody.innerHTML = papers
-    .map((p) => {
+    .map((p, idx) => {
       const meta = [p.source, p.year, p.venue, p.citations != null ? `${p.citations} citations` : null]
         .filter(Boolean)
         .join(" · ");
       return `
-        <div class="paper-card">
-          <p class="paper-title"><a href="${p.url || "#"}" target="_blank" rel="noopener">${escapeHtml(p.title)}</a></p>
+        <div class="paper-card" data-idx="${idx}">
+          <p class="paper-title">${escapeHtml(p.title)}</p>
           <p class="paper-meta">${escapeHtml(meta)}</p>
-          ${p.abstract ? `<p class="paper-abstract">${escapeHtml(truncate(p.abstract, 220))}</p>` : ""}
+          ${p.abstract ? `<p class="paper-abstract">${escapeHtml(truncate(p.abstract, 200))}</p>` : ""}
+          <p class="paper-hint">Click for insights ↓</p>
         </div>`;
     })
     .join("");
@@ -1074,10 +1461,84 @@ function renderRelated(topics) {
   });
 }
 
+// ---------- Paper insight bottom sheet ----------
+const INSIGHT_PROMPT = (paper) =>
+  `Here is a research paper.\nTitle: ${paper.title}\nAbstract: ${paper.abstract || "(not available — infer conservatively from the title only, and say the abstract wasn't available)"}\n\nGive me, in plain text, no markdown headers:\n1. One sentence on what this paper is actually about.\n2. 2-3 bullet points (start each with "- ") on the key findings I should expect.\n3. One line: anything genuinely surprising or counter-intuitive here — or say "nothing especially surprising here" if not.\nKeep it tight.`;
+
+function closeInsightSheetFn() {
+  insightSheet.hidden = true;
+  document.querySelectorAll(".paper-card.open").forEach((c) => c.classList.remove("open"));
+  openInsightIdx = null;
+}
+
+function formatInsightText(text) {
+  const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);
+  let html = "";
+  let inList = false;
+  lines.forEach((line) => {
+    const isBullet = /^[-•]\s*/.test(line);
+    if (isBullet) {
+      if (!inList) { html += "<ul>"; inList = true; }
+      html += `<li>${escapeHtml(line.replace(/^[-•]\s*/, ""))}</li>`;
+    } else {
+      if (inList) { html += "</ul>"; inList = false; }
+      html += `<p>${escapeHtml(line.replace(/^\d+\.\s*/, ""))}</p>`;
+    }
+  });
+  if (inList) html += "</ul>";
+  return html;
+}
+
+async function openInsightForPaper(idx) {
+  const paper = currentPapers[idx];
+  if (!paper) return;
+
+  if (openInsightIdx === idx) {
+    closeInsightSheetFn();
+    return;
+  }
+  document.querySelectorAll(".paper-card.open").forEach((c) => c.classList.remove("open"));
+  const card = papersBody.querySelector(`.paper-card[data-idx="${idx}"]`);
+  if (card) card.classList.add("open");
+  openInsightIdx = idx;
+
+  insightTitle.textContent = paper.title;
+  insightOpenPaper.href = paper.url || "#";
+  insightBody.innerHTML = `<p class="loading">Generating insights…</p>`;
+  insightSheet.hidden = false;
+
+  let text = null;
+  if (window.NodewayAI) {
+    try {
+      text = await window.NodewayAI.callActive(INSIGHT_PROMPT(paper));
+    } catch (err) {
+      text = null;
+    }
+  }
+  // stale click guard — user may have clicked another paper while this was in flight
+  if (openInsightIdx !== idx) return;
+
+  if (text) {
+    insightBody.innerHTML = formatInsightText(text);
+  } else if (paper.abstract) {
+    insightBody.innerHTML = `<p>${escapeHtml(paper.abstract)}</p><p class="source-note">Raw abstract — add an AI connection in Settings for generated insights (what it's about, key findings, what's surprising) instead.</p>`;
+  } else {
+    insightBody.innerHTML = `<p class="error-text">No abstract available and no AI connection configured to generate insights. Open the paper directly to read it.</p>`;
+  }
+}
+
+papersBody.addEventListener("click", (e) => {
+  const card = e.target.closest(".paper-card");
+  if (!card) return;
+  openInsightForPaper(Number(card.dataset.idx));
+});
+closeInsightSheet.addEventListener("click", closeInsightSheetFn);
+
 // ---------- Main open-dossier flow ----------
 async function openDossier(topic) {
   currentTopic = topic.trim();
   currentField = fieldForTopic(currentTopic);
+  closeInsightSheetFn();
 
   heroSection.hidden = true;
   dossierSection.hidden = false;
@@ -1086,6 +1547,7 @@ async function openDossier(topic) {
   dossierField.textContent = currentField;
 
   primerBody.innerHTML = `<p class="loading">Thinking…</p>`;
+  wikiLink.hidden = true;
   imagesBody.innerHTML = `<p class="loading">Fetching images…</p>`;
   papersBody.innerHTML = `<p class="loading">Querying CrossRef and Semantic Scholar…</p>`;
   relatedBody.innerHTML = `<p class="loading">Finding related nodes…</p>`;
@@ -1104,13 +1566,15 @@ async function openDossier(topic) {
   renderImages(wiki?.thumbnail, openverseImages, currentTopic);
 
   const seen = new Set();
-  const mergedPapers = [...crossrefPapers, ...s2Papers].filter((p) => {
-    const key = p.title.toLowerCase().slice(0, 60);
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  });
-  renderPapers(mergedPapers.slice(0, 6), currentTopic);
+  const mergedPapers = [...crossrefPapers, ...s2Papers]
+    .filter((p) => {
+      const key = p.title.toLowerCase().slice(0, 60);
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    })
+    .sort((a, b) => (b.citations ?? -1) - (a.citations ?? -1));
+  renderPapers(mergedPapers.slice(0, 12));
 
   const related = await fetchRelatedTopics(wiki?.title);
   renderRelated(related);
@@ -1122,7 +1586,7 @@ async function openDossier(topic) {
   }
 }
 
-// ---------- Drawers / modal ----------
+// ---------- Drawers ----------
 function toggleDrawer(drawer, open) {
   drawer.classList.toggle("open", open);
   scrim.hidden = !open;
@@ -1135,52 +1599,6 @@ closeHistoryDrawer.addEventListener("click", () => toggleDrawer(historyDrawer, f
 scrim.addEventListener("click", () => {
   toggleDrawer(pathDrawer, false);
   toggleDrawer(historyDrawer, false);
-});
-
-function refreshProviderHint() {
-  const p = providerSelect.value;
-  const info = PROVIDER_DEFAULTS[p] || PROVIDER_DEFAULTS.none;
-  if (p === "none") {
-    apiKeyInput.disabled = true;
-    modelInput.disabled = true;
-    apiKeyInput.value = "";
-    providerHint.textContent = "No key needed — summaries will use the Wikipedia extract.";
-    return;
-  }
-  apiKeyInput.disabled = false;
-  modelInput.disabled = false;
-  if (!modelInput.value) modelInput.value = info.model;
-  providerHint.textContent = info.keyHelp + " Stored only in this browser's local storage.";
-}
-
-settingsToggle.addEventListener("click", () => {
-  const settings = getAiSettings();
-  providerSelect.value = settings.provider || "none";
-  apiKeyInput.value = settings.apiKey || "";
-  modelInput.value = settings.model || (PROVIDER_DEFAULTS[settings.provider]?.model ?? "");
-  refreshProviderHint();
-  settingsOverlay.hidden = false;
-});
-providerSelect.addEventListener("change", refreshProviderHint);
-closeSettings.addEventListener("click", () => (settingsOverlay.hidden = true));
-settingsOverlay.addEventListener("click", (e) => {
-  if (e.target === settingsOverlay) settingsOverlay.hidden = true;
-});
-saveApiKey.addEventListener("click", () => {
-  const provider = providerSelect.value;
-  setAiSettings({
-    provider,
-    apiKey: apiKeyInput.value.trim(),
-    model: modelInput.value.trim() || (PROVIDER_DEFAULTS[provider]?.model ?? ""),
-  });
-  settingsOverlay.hidden = true;
-});
-clearApiKey.addEventListener("click", () => {
-  clearAiSettings();
-  providerSelect.value = "none";
-  apiKeyInput.value = "";
-  modelInput.value = "";
-  settingsOverlay.hidden = true;
 });
 
 // ---------- Search suggestions (typeahead against the topic shelf) ----------
@@ -1291,6 +1709,7 @@ newTopicBtn.addEventListener("click", () => {
   dossierSection.hidden = true;
   heroSection.hidden = false;
   topicInput.value = "";
+  closeInsightSheetFn();
   window.scrollTo({ top: 0, behavior: "smooth" });
 });
 

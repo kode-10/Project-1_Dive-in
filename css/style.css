@@ -68,6 +68,15 @@ a { color: var(--indigo); }
   cursor: pointer; transition: border-color 0.15s ease, color 0.15s ease;
 }
 .icon-btn:hover { border-color: var(--indigo); color: var(--indigo); }
+.icon-btn { position: relative; }
+.gear-status-dot {
+  position: absolute; top: -2px; right: -2px;
+  width: 10px; height: 10px; border-radius: 50%;
+  border: 2px solid var(--bg); box-sizing: content-box;
+}
+.gear-status-dot.status-ok { background: #2fae5c; }
+.gear-status-dot.status-error { background: #d64545; }
+.gear-status-dot.status-unknown { background: #c4c8d6; }
 
 /* ---------- Stage / hero ---------- */
 .stage { max-width: 1080px; margin: 0 auto; padding: 0 28px 100px; }
@@ -199,6 +208,13 @@ a { color: var(--indigo); }
   padding: 3px 9px; border-radius: 999px; letter-spacing: 0.03em;
 }
 .node-badge.wiki-badge { background: #f1eee6; color: #8a7a4a; }
+.badge-row { display: flex; align-items: center; gap: 8px; }
+.wiki-link-badge {
+  background: var(--teal-soft); color: #0d6d61; text-decoration: none;
+  transition: background 0.15s ease;
+}
+.wiki-link-badge:hover { background: #cdeeea; }
+.sort-badge { background: var(--bg); color: var(--ink-muted); border: 1px solid var(--border); }
 
 .node-card-body { font-size: 0.93rem; line-height: 1.65; color: var(--ink); }
 .node-card-body p { margin: 0 0 10px; }
@@ -216,13 +232,22 @@ a { color: var(--indigo); }
 .images-grid .img-credit { grid-column: 1 / -1; font-family: var(--mono); font-size: 0.65rem; color: var(--ink-muted); margin-top: 4px; }
 
 /* papers */
-.paper-card { border-top: 1px solid var(--border); padding: 14px 0; }
-.paper-card:first-child { border-top: none; padding-top: 4px; }
-.paper-title { font-weight: 700; font-size: 0.95rem; margin: 0 0 4px; }
-.paper-title a { color: var(--indigo-dark); text-decoration: none; }
-.paper-title a:hover { text-decoration: underline; }
+.papers-list { max-height: 420px; overflow-y: auto; padding-right: 4px; }
+.paper-card {
+  border-top: 1px solid var(--border); padding: 14px 6px;
+  cursor: pointer; border-radius: 8px; margin: 0 -6px;
+  transition: background 0.15s ease;
+}
+.paper-card:hover { background: var(--bg); }
+.paper-card.open { background: var(--indigo-soft); }
+.paper-card:first-child { border-top: none; }
+.paper-title { font-weight: 700; font-size: 0.95rem; margin: 0 0 4px; color: var(--ink); }
 .paper-meta { font-family: var(--mono); font-size: 0.7rem; color: var(--ink-muted); text-transform: uppercase; margin: 0 0 6px; }
-.paper-abstract { font-size: 0.85rem; color: var(--ink-muted); margin: 0; }
+.paper-abstract { font-size: 0.85rem; color: var(--ink-muted); margin: 0 0 4px; }
+.paper-hint {
+  font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase;
+  color: var(--indigo); margin: 0; letter-spacing: 0.03em;
+}
 
 /* related chips */
 .chips-row { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -285,9 +310,36 @@ a { color: var(--indigo); }
 .modal-input {
   width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
   padding: 12px 14px; font-family: var(--mono); font-size: 0.85rem; color: var(--ink);
+  margin-bottom: 4px;
 }
+.modal-input:disabled { opacity: 0.5; }
 .modal-hint { font-size: 0.78rem; color: var(--ink-muted); line-height: 1.5; margin: 10px 0 18px; }
 .modal .btn-primary, .modal .btn-ghost { margin-right: 8px; margin-top: 4px; }
+.modal-wide { max-width: 560px; }
+
+/* connections list */
+.connections-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 6px; }
+.connections-empty { font-size: 0.85rem; color: var(--ink-muted); font-style: italic; margin: 6px 0 14px; }
+.connection-row {
+  display: flex; align-items: center; gap: 10px;
+  border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px;
+  background: var(--bg);
+}
+.status-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.status-dot.status-ok { background: #2fae5c; }
+.status-dot.status-error { background: #d64545; }
+.status-dot.status-unknown { background: #c4c8d6; }
+.connection-info { flex: 1; min-width: 0; }
+.connection-name { font-weight: 700; font-size: 0.86rem; margin: 0; }
+.connection-meta { font-family: var(--mono); font-size: 0.68rem; color: var(--ink-muted); margin: 2px 0 0; }
+.connection-active {
+  font-size: 0.72rem; color: var(--ink-muted); display: flex; align-items: center; gap: 4px;
+  white-space: nowrap;
+}
+.btn-sm { padding: 6px 10px; font-size: 0.75rem; }
+.icon-btn.btn-sm { width: 26px; height: 26px; }
+.connection-error-note { font-size: 0.75rem; margin: -4px 0 4px; }
+.connection-form { border-top: 1px solid var(--border); margin-top: 16px; padding-top: 4px; }
 
 .scrim { position: fixed; inset: 0; background: rgba(20,22,31,0.35); z-index: 40; }
 
@@ -315,3 +367,35 @@ a { color: var(--indigo); }
 }
 
 [hidden] { display: none !important; }
+
+/* ---------- Paper insight bottom sheet ---------- */
+.insight-sheet {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 80;
+  max-height: 46vh;
+  background: var(--surface); border-top: 1px solid var(--border);
+  border-radius: 18px 18px 0 0;
+  box-shadow: 0 -12px 30px rgba(20,22,31,0.14);
+  display: flex; flex-direction: column;
+  animation: sheet-up 0.2s ease;
+}
+@keyframes sheet-up {
+  from { transform: translateY(16px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.insight-sheet-head {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+  padding: 16px 22px 10px; border-bottom: 1px solid var(--border);
+}
+.insight-sheet-title { font-weight: 800; font-size: 1rem; margin: 0; max-width: 640px; }
+.insight-sheet-body {
+  padding: 14px 22px; overflow-y: auto; font-size: 0.9rem; line-height: 1.6; color: var(--ink);
+}
+.insight-sheet-body p { margin: 0 0 10px; }
+.insight-sheet-body ul { margin: 0 0 10px; padding-left: 20px; }
+.insight-sheet-body li { margin-bottom: 4px; }
+.insight-sheet-footer { padding: 12px 22px 18px; border-top: 1px solid var(--border); }
+
+@media (max-width: 640px) {
+  .insight-sheet { max-height: 60vh; }
+  .insight-sheet-head, .insight-sheet-body, .insight-sheet-footer { padding-left: 16px; padding-right: 16px; }
+}
