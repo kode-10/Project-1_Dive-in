@@ -158,3 +158,4 @@ the map to rename it — e.g. to the skill you feel you've actually built
   connection; if it fails at call time, falls straight to Wikipedia/abstract).
 - Author/practitioner panel via Semantic Scholar's author endpoint.
 - Export the catalogue or mind map as markdown notes.
+- Built by Kuntal
